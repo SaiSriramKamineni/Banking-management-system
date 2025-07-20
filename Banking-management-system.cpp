@@ -68,7 +68,9 @@ bool create_account(vector<account>& accts) {
     cin >> str;
 
     string joint_holder = "No Joint Holder in this account";
-    if (str == "YES") {
+
+    // Case insensitive (Allow lowercase input ("yes" or "no"))
+    if (str == "YES" || str == "yes") {
         cout << "Enter the name of Joint Holder : ";
         cin >> joint_holder;
     }
@@ -76,6 +78,11 @@ bool create_account(vector<account>& accts) {
     string pin;
     cout << "\nEnter the pin : ";
     cin >> pin;
+    if (pin.length() < 4 || pin.length() > 6) {
+        cout << "PIN should be 4 to 6 digits.\n";
+        return false;
+    }
+
 
     string typeofacc;
     cout << "\nEnter the type of account : ";
@@ -84,11 +91,24 @@ bool create_account(vector<account>& accts) {
     cout << "2 - Current Account\n";
     cout << "Enter your choice here : ";
     cin >> choice;
+
+    // Check if choice is 1 or 2
+    if (choice != 1 && choice != 2) {
+    cout << "Invalid account type choice!\n";
+    return false;
+    }
+
     typeofacc = (choice == 1) ? "Savings" : "Current";
 
     int balance;
     cout << "\nEnter the balance you want to have initially in your account : ";
     cin >> balance;
+
+    // error handling (disallow negative balances)
+    if (balance < 0){
+        cout << "Balance cannot be negative" << endl;
+        return false;
+    }
 
     // If it is savings account
     if (typeofacc == "Savings") {
